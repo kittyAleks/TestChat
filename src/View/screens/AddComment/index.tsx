@@ -8,6 +8,7 @@ import {createComment} from '../../../store/comment/commentsThunks.ts';
 import {handleChooseFile} from '../../../helpers/fileHelper.ts';
 import {Formik, FormikHelpers} from 'formik';
 import {commentValidationSchema} from '../../../helpers/validation/validationSchema.ts';
+import {CommentPreviewModal} from '../../components/ModalPreview.tsx';
 
 type Form = {
   avatar: string;
@@ -35,6 +36,7 @@ export const AddCommentForm = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [preview, setPreview] = useState<Form | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const onSubmit = (values: Form, {resetForm}: FormikHelpers<Form>) => {
     const newComment = {
@@ -45,6 +47,10 @@ export const AddCommentForm = () => {
     //@ts-ignore
     navigation.navigate('Comments');
     resetForm();
+  };
+  const handlePreview = (values: Form) => {
+    setPreview(values);
+    setModalVisible(true);
   };
 
   return (
@@ -132,22 +138,13 @@ export const AddCommentForm = () => {
             onPress={() => handleChooseFile(uri => setFieldValue('file', uri))}
           />
           <Button title="Add Comment" onPress={handleSubmit as any} />
+          <Button title="Preview" onPress={() => handlePreview(values)} />
 
-          {/*{preview && (*/}
-          {/*  <View style={styles.preview}>*/}
-          {/*    <Text>Preview:</Text>*/}
-          {/*    <Text>Avatar: {preview.avatar}</Text>*/}
-          {/*    <Text>User Name: {preview.username}</Text>*/}
-          {/*    <Text>Email: {preview.email}</Text>*/}
-          {/*    <Text>Home Page: {preview.homepage}</Text>*/}
-          {/*    <Text>CAPTCHA: {preview.captcha}</Text>*/}
-          {/*    <Text>Text: {preview.text}</Text>*/}
-          {/*    <Image*/}
-          {/*      source={{uri: preview.file?.uri}}*/}
-          {/*      style={{width: 320, height: 240}}*/}
-          {/*    />*/}
-          {/*  </View>*/}
-          {/*)}*/}
+          <CommentPreviewModal
+            visible={modalVisible}
+            onClose={() => setModalVisible(false)}
+            previewData={preview}
+          />
         </View>
       )}
     </Formik>
