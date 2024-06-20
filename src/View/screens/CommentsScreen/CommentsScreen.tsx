@@ -1,14 +1,18 @@
 // CommentsScreen.tsx
 import React, {useEffect, useState} from 'react';
 import {View, Text, FlatList, Button} from 'react-native';
+
 import {useSelector} from '../../../init';
 import {fetchComments} from '../../../store/comment/commentsThunks.ts';
 import {CommentItem} from '../../components/Comments/CommentsList.tsx';
-import {styles} from './style.ts';
 import {Comments} from '../../../store/comment/types.ts';
 import {useDispatch} from '../../../init';
+import {useTheme} from '../../../assets/themes/ThemeContext.ts';
+import {getStyles} from './style.ts';
 
 export const CommentsScreen = () => {
+  const {theme} = useTheme();
+  const styles = getStyles(theme);
   const dispatch = useDispatch();
   const [sortKey, setSortKey] = useState<'createdAt' | 'username' | 'email'>(
     'createdAt',
@@ -45,6 +49,7 @@ export const CommentsScreen = () => {
   return (
     <View style={styles.container}>
       <Button
+        color={theme.buttonColor}
         title="Sort by User Name"
         onPress={() => {
           setSortKey('username');
@@ -52,6 +57,7 @@ export const CommentsScreen = () => {
         }}
       />
       <Button
+        color={theme.buttonColor}
         title="Sort by Email"
         onPress={() => {
           setSortKey('email');
@@ -59,6 +65,7 @@ export const CommentsScreen = () => {
         }}
       />
       <Button
+        color={theme.buttonColor}
         title="Sort by Date"
         onPress={() => {
           setSortKey('createdAt');

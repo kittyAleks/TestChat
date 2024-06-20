@@ -3,10 +3,13 @@ import {Button, Image, Text, View} from 'react-native';
 import {useDispatch} from '../../../init';
 
 import {deleteComment} from '../../../store/comment/commentsThunks';
-import {styles} from '../../screens/CommentsScreen/style.ts';
 import {Comment} from '../../../store/comment/types.ts';
+import {useTheme} from '../../../assets/themes/ThemeContext.ts';
+import {getStyles} from '../../screens/CommentsScreen/style.ts';
 
 export const CommentItem: FC<{item: Comment}> = ({item}) => {
+  const {theme} = useTheme();
+  const styles = getStyles(theme);
   const dispatch = useDispatch();
 
   const handleDelete = () => {
@@ -34,7 +37,11 @@ export const CommentItem: FC<{item: Comment}> = ({item}) => {
         <Text style={styles.username}>{item.username}</Text>
         <Text style={styles.email}>{item.email}</Text>
         <Text style={styles.text}>{item.text}</Text>
-        <Button title="Delete" onPress={handleDelete} />
+        <Button
+          color={theme.buttonColor}
+          title="Delete"
+          onPress={handleDelete}
+        />
       </View>
     </View>
   );

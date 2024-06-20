@@ -3,12 +3,14 @@ import React, {useState} from 'react';
 import {useDispatch} from '../../../init';
 import {View, TextInput, Button, Image, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {styles} from './style';
+import {Formik, FormikHelpers} from 'formik';
+
 import {createComment} from '../../../store/comment/commentsThunks.ts';
 import {handleChooseFile} from '../../../helpers/fileHelper.ts';
-import {Formik, FormikHelpers} from 'formik';
 import {commentValidationSchema} from '../../../helpers/validation/validationSchema.ts';
 import {CommentPreviewModal} from '../../components/ModalPreview.tsx';
+import {useTheme} from '../../../assets/themes/ThemeContext.ts';
+import {getStyles} from './style.ts';
 
 type Form = {
   avatar: string;
@@ -37,6 +39,9 @@ export const AddCommentForm = () => {
   const navigation = useNavigation();
   const [preview, setPreview] = useState<Form | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
+
+  const {theme} = useTheme();
+  const styles = getStyles(theme);
 
   const onSubmit = (values: Form, {resetForm}: FormikHelpers<Form>) => {
     const newComment = {
@@ -67,7 +72,7 @@ export const AddCommentForm = () => {
         touched,
         setFieldValue,
       }) => (
-        <View style={styles.form}>
+        <View style={[styles.form, {backgroundColor: theme.backgroundColor}]}>
           <TextInput
             placeholder="Avatar URL"
             onChangeText={handleChange('avatar')}
@@ -134,12 +139,20 @@ export const AddCommentForm = () => {
             style={{width: 320, height: 240}}
           />
           <Button
+            color={theme.buttonColor}
             title="Choose File"
             onPress={() => handleChooseFile(uri => setFieldValue('file', uri))}
           />
-          <Button title="Add Comment" onPress={handleSubmit as any} />
-          <Button title="Preview" onPress={() => handlePreview(values)} />
-
+          <Button
+            color={theme.buttonColor}
+            title="Add Comment"
+            onPress={handleSubmit as any}
+          />
+          <Button
+            color={theme.buttonColor}
+            title="Preview"
+            onPress={() => handlePreview(values)}
+          />
           <CommentPreviewModal
             visible={modalVisible}
             onClose={() => setModalVisible(false)}
