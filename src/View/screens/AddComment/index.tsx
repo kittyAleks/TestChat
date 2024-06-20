@@ -9,7 +9,7 @@ import {createComment} from '../../../store/comment/commentsThunks.ts';
 import {handleChooseFile} from '../../../helpers/fileHelper.ts';
 import {commentValidationSchema} from '../../../helpers/validation/validationSchema.ts';
 import {CommentPreviewModal} from '../../components/ModalPreview.tsx';
-import {useTheme} from '../../../assets/themes/ThemeContext.ts';
+import {themes, useTheme} from '../../../assets/themes/ThemeContext.ts';
 import {getStyles} from './style.ts';
 
 type Form = {
@@ -72,9 +72,9 @@ export const AddCommentForm = () => {
         touched,
         setFieldValue,
       }) => (
-        <ScrollView
-          style={[styles.form, {backgroundColor: theme.backgroundColor}]}>
+        <ScrollView style={[styles.form]}>
           <TextInput
+            placeholderTextColor={theme.textColor}
             placeholder="Avatar URL"
             onChangeText={handleChange('avatar')}
             onBlur={handleBlur('avatar')}
@@ -85,6 +85,7 @@ export const AddCommentForm = () => {
             <Text style={styles.error}>{errors.avatar}</Text>
           )}
           <TextInput
+            placeholderTextColor={theme.textColor}
             placeholder="User Name"
             onChangeText={handleChange('username')}
             onBlur={handleBlur('username')}
@@ -95,6 +96,7 @@ export const AddCommentForm = () => {
             <Text style={styles.error}>{errors.username}</Text>
           )}
           <TextInput
+            placeholderTextColor={theme.textColor}
             placeholder="E-mail"
             onChangeText={handleChange('email')}
             onBlur={handleBlur('email')}
@@ -105,6 +107,7 @@ export const AddCommentForm = () => {
             <Text style={styles.error}>{errors.email}</Text>
           )}
           <TextInput
+            placeholderTextColor={theme.textColor}
             placeholder="Home page"
             onChangeText={handleChange('homepage')}
             onBlur={handleBlur('homepage')}
@@ -115,6 +118,7 @@ export const AddCommentForm = () => {
             <Text style={styles.error}>{errors.homepage}</Text>
           )}
           <TextInput
+            placeholderTextColor={theme.textColor}
             placeholder="CAPTCHA"
             onChangeText={handleChange('captcha')}
             onBlur={handleBlur('captcha')}
@@ -125,6 +129,7 @@ export const AddCommentForm = () => {
             <Text style={styles.error}>{errors.captcha}</Text>
           )}
           <TextInput
+            placeholderTextColor={theme.textColor}
             placeholder="Text"
             onChangeText={handleChange('text')}
             onBlur={handleBlur('text')}
