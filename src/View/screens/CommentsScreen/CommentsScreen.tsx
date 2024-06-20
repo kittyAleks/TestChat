@@ -15,7 +15,6 @@ export const CommentsScreen = () => {
   );
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const {comments, loading, error} = useSelector(state => state.comments);
-  console.log('WWcommentsRRR', comments);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -24,7 +23,6 @@ export const CommentsScreen = () => {
 
   const dataHandler = (): Comments | null => {
     if (comments) {
-      // Создаем копию массива перед сортировкой
       const sortedComments = [...comments].sort((a, b) => {
         if (sortOrder === 'asc') {
           return a[sortKey] > b[sortKey] ? 1 : -1;
