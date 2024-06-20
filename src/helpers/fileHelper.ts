@@ -1,9 +1,39 @@
 import {launchImageLibrary} from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
-import {Alert} from 'react-native';
+import {Alert, PermissionsAndroid, Platform} from 'react-native';
+
+const requestStoragePermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+      {
+        title: 'Storage Permission',
+        message: 'This app needs access to your storage to load photos.',
+        buttonNeutral: 'Ask Me Later',
+        buttonNegative: 'Cancel',
+        buttonPositive: 'OK',
+      },
+    );
+    return granted === PermissionsAndroid.RESULTS.GRANTED;
+  } catch (err) {
+    console.warn(err);
+    return false;
+  }
+};
 
 export const handleChooseFile = async (setFile: (file: any) => void) => {
-  launchImageLibrary({mediaType: 'mixed'}, async response => {
+  const hasPermission =
+    Platform.OS === 'ios' ? true : await requestStoragePermission();
+
+  if (!hasPermission) {
+    Alert.alert(
+      'Permission Denied',
+      'You need to grant storage permission to select files.',
+    );
+    return;
+  }
+
+  await launchImageLibrary({mediaType: 'mixed'}, async response => {
     if (response.didCancel) {
       console.log('User cancelled image picker');
     } else if (response.errorCode) {

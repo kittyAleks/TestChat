@@ -1,7 +1,7 @@
 // AddCommentForm.tsx
 import React, {useState} from 'react';
 import {useDispatch} from '../../../init';
-import {View, TextInput, Button, Image, Text} from 'react-native';
+import {View, TextInput, Button, Image, Text, ScrollView} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Formik, FormikHelpers} from 'formik';
 
@@ -72,7 +72,8 @@ export const AddCommentForm = () => {
         touched,
         setFieldValue,
       }) => (
-        <View style={[styles.form, {backgroundColor: theme.backgroundColor}]}>
+        <ScrollView
+          style={[styles.form, {backgroundColor: theme.backgroundColor}]}>
           <TextInput
             placeholder="Avatar URL"
             onChangeText={handleChange('avatar')}
@@ -134,31 +135,39 @@ export const AddCommentForm = () => {
           {errors.text && touched.text && (
             <Text style={styles.error}>{errors.text}</Text>
           )}
-          <Image
-            source={{uri: values.file?.uri}}
-            style={{width: 320, height: 240}}
-          />
-          <Button
-            color={theme.buttonColor}
-            title="Choose File"
-            onPress={() => handleChooseFile(uri => setFieldValue('file', uri))}
-          />
-          <Button
-            color={theme.buttonColor}
-            title="Add Comment"
-            onPress={handleSubmit as any}
-          />
-          <Button
-            color={theme.buttonColor}
-            title="Preview"
-            onPress={() => handlePreview(values)}
-          />
+          <View style={{marginBottom: 50}}>
+            <Image
+              source={{
+                uri:
+                  values.file?.uri ||
+                  'https://m.media-amazon.com/images/S/pv-target-images/16627900db04b76fae3b64266ca161511422059cd24062fb5d900971003a0b70.jpg',
+              }}
+              style={{width: 320, height: 240}}
+            />
+            <Button
+              color={theme.buttonColor}
+              title="Choose File"
+              onPress={() =>
+                handleChooseFile(uri => setFieldValue('file', uri))
+              }
+            />
+            <Button
+              color={theme.buttonColor}
+              title="Add Comment"
+              onPress={handleSubmit as any}
+            />
+            <Button
+              color={theme.buttonColor}
+              title="Preview"
+              onPress={() => handlePreview(values)}
+            />
+          </View>
           <CommentPreviewModal
             visible={modalVisible}
             onClose={() => setModalVisible(false)}
             previewData={preview}
           />
-        </View>
+        </ScrollView>
       )}
     </Formik>
   );

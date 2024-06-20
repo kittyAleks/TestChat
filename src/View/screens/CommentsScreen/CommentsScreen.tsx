@@ -81,10 +81,15 @@ export const CommentsScreen = () => {
         contentContainerStyle={styles.list}
       />
       <Button
+        color={theme.buttonColor}
         title="Previous"
         onPress={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
       />
-      <Button title="Next" onPress={() => setCurrentPage(prev => prev + 1)} />
+      <Button
+        color={theme.buttonColor}
+        title="Next"
+        onPress={() => setCurrentPage(prev => prev + 1)}
+      />
     </View>
   );
 };
